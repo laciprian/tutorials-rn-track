@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet} from "react-native";
 import {Context as AuthContext} from "../context/AuthContext";
-import AuthForm from "../components/authForm";
 import NavLink from "../components/NavLink";
 import {NavigationEvents} from "react-navigation";
+import AuthForm from "../components/authForm";
 
 const SignupScreen = ({navigation}) => {
     const {state, signup, clearErrorMessage} = useContext(AuthContext);
