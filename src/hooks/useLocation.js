@@ -1,27 +1,35 @@
-import { useState, useEffect} from 'react';
-import { Accuracy, requestForegroundPermissionsAsync, watchPositionAsync} from "expo-location";
+import {useState, useEffect} from 'react';
+import {Accuracy, requestForegroundPermissionsAsync, watchPositionAsync} from "expo-location";
 
-export  default (callback) => {
+export default (shouldTrack, callback) => {
     const [err, setErr] = useState(null);
+    const [subscriber, setSubscriber] = useState(null);
 
     const startWatching = async () => {
         try {
             await requestForegroundPermissionsAsync();
-            await watchPositionAsync({
+            const sub = await watchPositionAsync({
                     accuracy: Accuracy.BestForNavigation,
                     timeInterval: 1000,
                     distanceInterval: 10
                 },
                 callback
-            )
+            );
+            setSubscriber(sub);
         } catch (e) {
             setErr(e);
         }
     };
 
     useEffect(() => {
+        if (!shouldTrack) {
+            subscriber.remove();
+            setSubscriber(null);
+            return;
+        }
+
         startWatching();
-    }, []);
+    }, [shouldTrack]);
 
     return [err];
 };
