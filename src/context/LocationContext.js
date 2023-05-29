@@ -11,7 +11,7 @@ const locationReducer = (state, action) => {
         case 'stop_recording':
             return {...state, recording: false};
             case 'change_name':
-            return {...state, name: payload.name};
+            return {...state, name: action.payload};
         default:
             return state;
     }
